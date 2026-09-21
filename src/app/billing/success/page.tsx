@@ -1,0 +1,1 @@
+import Link from "next/link";export default function Success(){return <main className="wrap"><section className="hero"><div className="eyebrow">HUMAN ROOM</div><h1>Subscription received.</h1><p>Your access is activated only after Human Room verifies the payment with Stripe.</p><Link className="cta" href="/me">GO TO MY ROOMS</Link></section></main>}
