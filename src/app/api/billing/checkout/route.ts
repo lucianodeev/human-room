@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";
+export async function POST(){return NextResponse.json({error:"Checkout is staged but locked until Stripe server secrets and webhook verification are configured."},{status:503})}
