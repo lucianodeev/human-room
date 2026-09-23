@@ -1,75 +1,15 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const steps = [
-  ["1", "Create a room", "Start with one real question that deserves more than a quick answer."],
-  ["2", "Select perspectives", "People apply through ideas first. The host chooses the mix of minds."],
-  ["3", "Meet and synthesize", "Participants confirm, join, leave feedback, and the host publishes a Human Brief."],
-];
-
-const principles = [
-  ["No popularity contest", "No follower count, no public ranking, no pressure to perform."],
-  ["Adults only", "Human Room is designed for respectful adult conversations."],
-  ["Question first", "The room is organized around what the question needs, not who is loudest."],
-  ["Public only when published", "Human Briefs appear publicly only after the host chooses to publish them."],
-];
-
-export default function Home() {
-  return (
-    <main className="wrap">
-      <nav className="nav">
-        <div className="brand">HUMAN ROOM</div>
-        <div className="navlinks">
-          <Link href="/rooms">ROOMS</Link>
-          <Link href="/me">MY ROOMS</Link>
-          <Link href="/safety">SAFETY</Link>
-        </div>
-      </nav>
-
-      <section className="hero">
-        <div className="eyebrow">6 perspectives · 1 question · real humans</div>
-        <h1>The anti-feed room for serious questions.</h1>
-        <p>
-          Human Room brings together selected people around one question, captures how they think, and turns the conversation into a Human Brief.
-        </p>
-        <div className="actions">
-          <Link className="cta" href="/ask">CREATE A HUMAN ROOM</Link>
-          <Link className="ghost" href="/rooms">EXPLORE OPEN ROOMS</Link>
-        </div>
-      </section>
-
-      <section>
-        <div className="eyebrow">HOW IT WORKS</div>
-        <h2>From question to Human Brief.</h2>
-        <div className="grid">
-          {steps.map(([n, title, text]) => (
-            <article className="card" key={title}>
-              <div className="eyebrow">STEP {n}</div>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="card highlight">
-        <div className="eyebrow">PILOT QUESTION</div>
-        <p className="question">What business is still worth building in the age of AI?</p>
-        <p>No followers. No likes. No swipe. Contribution comes before popularity.</p>
-      </section>
-
-      <section>
-        <div className="eyebrow">WHY IT FEELS DIFFERENT</div>
-        <div className="grid">
-          {principles.map(([title, text]) => (
-            <article className="card" key={title}>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <footer className="footer">Human Room · Brussels / Online · MVP · <Link href="/safety">Safety and use rules</Link></footer>
-    </main>
-  );
-}
+type Lang="pt"|"fr"|"en"|"es";
+const copy={
+pt:{nav:["SALAS","MINHAS SALAS","SEGURANÇA"],ey:"6 perspectivas · 1 pergunta · humanos reais",title:"A sala anti-feed para perguntas que importam.",desc:"Human Room reúne pessoas selecionadas em torno de uma pergunta, registra como elas pensam e transforma a conversa em um Human Brief.",actions:["CRIAR UMA HUMAN ROOM","EXPLORAR SALAS ABERTAS"],how:"COMO FUNCIONA",from:"Da pergunta ao Human Brief.",steps:[["Criar uma sala","Comece com uma pergunta real que merece mais do que uma resposta rápida."],["Selecionar perspectivas","As pessoas se candidatam pelas ideias primeiro. O anfitrião escolhe a combinação de perspectivas."],["Conversar e sintetizar","Participantes confirmam, conversam, deixam feedback e o anfitrião publica um Human Brief."]],pilot:"PERGUNTA-PILOTO",q:"Qual negócio ainda vale a pena criar na era da IA?",rule:"Sem seguidores. Sem curtidas. Sem swipe. A contribuição vem antes da popularidade.",why:"POR QUE É DIFERENTE",principles:[["Sem disputa de popularidade","Sem contagem de seguidores, ranking público ou pressão para performar."],["Somente adultos","Human Room foi criada para conversas respeitosas entre adultos."],["A pergunta primeiro","A sala é organizada pelo que a pergunta precisa, não por quem fala mais alto."],["Público somente quando publicado","Human Briefs só aparecem publicamente quando o anfitrião decide publicar."]],safety:"Segurança e regras de uso"},
+fr:{nav:["SALLES","MES SALLES","SÉCURITÉ"],ey:"6 perspectives · 1 question · de vraies personnes",title:"La salle anti-feed pour les questions qui comptent.",desc:"Human Room réunit des personnes sélectionnées autour d’une question, recueille leurs façons de penser et transforme la conversation en Human Brief.",actions:["CRÉER UNE HUMAN ROOM","EXPLORER LES SALLES OUVERTES"],how:"COMMENT ÇA MARCHE",from:"De la question au Human Brief.",steps:[["Créer une salle","Commencez par une vraie question qui mérite plus qu’une réponse rapide."],["Sélectionner les perspectives","Les personnes candidatent d’abord par leurs idées. L’hôte choisit la combinaison de perspectives."],["Échanger et synthétiser","Les participants confirment, échangent, donnent leur avis et l’hôte publie un Human Brief."]],pilot:"QUESTION PILOTE",q:"Quelle entreprise vaut encore la peine d’être créée à l’ère de l’IA ?",rule:"Pas d’abonnés. Pas de likes. Pas de swipe. La contribution passe avant la popularité.",why:"POURQUOI C’EST DIFFÉRENT",principles:[["Pas de concours de popularité","Pas de nombre d’abonnés, de classement public ni de pression pour se mettre en scène."],["Adultes uniquement","Human Room est conçue pour des conversations respectueuses entre adultes."],["La question d’abord","La salle s’organise autour de ce dont la question a besoin, pas de la personne qui parle le plus fort."],["Public seulement après publication","Les Human Briefs ne deviennent publics que lorsque l’hôte choisit de les publier."]],safety:"Sécurité et règles d’utilisation"},
+en:{nav:["ROOMS","MY ROOMS","SAFETY"],ey:"6 perspectives · 1 question · real humans",title:"The anti-feed room for serious questions.",desc:"Human Room brings together selected people around one question, captures how they think, and turns the conversation into a Human Brief.",actions:["CREATE A HUMAN ROOM","EXPLORE OPEN ROOMS"],how:"HOW IT WORKS",from:"From question to Human Brief.",steps:[["Create a room","Start with one real question that deserves more than a quick answer."],["Select perspectives","People apply through ideas first. The host chooses the mix of minds."],["Meet and synthesize","Participants confirm, join, leave feedback, and the host publishes a Human Brief."]],pilot:"PILOT QUESTION",q:"What business is still worth building in the age of AI?",rule:"No followers. No likes. No swipe. Contribution comes before popularity.",why:"WHY IT FEELS DIFFERENT",principles:[["No popularity contest","No follower count, no public ranking, no pressure to perform."],["Adults only","Human Room is designed for respectful adult conversations."],["Question first","The room is organized around what the question needs, not who is loudest."],["Public only when published","Human Briefs appear publicly only after the host chooses to publish them."]],safety:"Safety and use rules"},
+es:{nav:["SALAS","MIS SALAS","SEGURIDAD"],ey:"6 perspectivas · 1 pregunta · personas reales",title:"La sala anti-feed para preguntas que importan.",desc:"Human Room reúne a personas seleccionadas en torno a una pregunta, recoge cómo piensan y transforma la conversación en un Human Brief.",actions:["CREAR UNA HUMAN ROOM","EXPLORAR SALAS ABIERTAS"],how:"CÓMO FUNCIONA",from:"De la pregunta al Human Brief.",steps:[["Crear una sala","Empieza con una pregunta real que merece más que una respuesta rápida."],["Seleccionar perspectivas","Las personas se postulan primero por sus ideas. El anfitrión elige la combinación de perspectivas."],["Conversar y sintetizar","Los participantes confirman, conversan, dejan comentarios y el anfitrión publica un Human Brief."]],pilot:"PREGUNTA PILOTO",q:"¿Qué negocio todavía vale la pena crear en la era de la IA?",rule:"Sin seguidores. Sin likes. Sin swipe. La contribución está antes que la popularidad.",why:"POR QUÉ ES DIFERENTE",principles:[["Sin concurso de popularidad","Sin número de seguidores, ranking público ni presión para aparentar."],["Solo adultos","Human Room está diseñada para conversaciones respetuosas entre adultos."],["La pregunta primero","La sala se organiza alrededor de lo que necesita la pregunta, no de quien habla más fuerte."],["Público solo al publicar","Los Human Briefs solo aparecen públicamente cuando el anfitrión decide publicarlos."]],safety:"Seguridad y reglas de uso"}
+} as const;
+function detected():Lang{const saved=localStorage.getItem("humanroom-lang");if(saved&&["pt","fr","en","es"].includes(saved))return saved as Lang;const langs=navigator.languages?.length?navigator.languages:[navigator.language];for(const x of langs){const l=x.toLowerCase().split("-")[0];if(["pt","fr","en","es"].includes(l))return l as Lang}return "en"}
+export default function Home(){const[lang,setLang]=useState<Lang>("en");useEffect(()=>setLang(detected()),[]);const t=copy[lang];function choose(v:Lang){setLang(v);localStorage.setItem("humanroom-lang",v);document.documentElement.lang=v}
+useEffect(()=>{document.documentElement.lang=lang},[lang]);
+return <main className="wrap"><nav className="nav"><div className="brand">HUMAN ROOM</div><div className="navlinks"><Link href="/rooms">{t.nav[0]}</Link><Link href="/me">{t.nav[1]}</Link><Link href="/safety">{t.nav[2]}</Link><select aria-label="Language" value={lang} onChange={e=>choose(e.target.value as Lang)} style={{width:"auto",margin:0,padding:"8px 10px",fontSize:14}}><option value="pt">PT</option><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select></div></nav><section className="hero"><div className="eyebrow">{t.ey}</div><h1>{t.title}</h1><p>{t.desc}</p><div className="actions"><Link className="cta" href="/ask">{t.actions[0]}</Link><Link className="ghost" href="/rooms">{t.actions[1]}</Link></div></section><section><div className="eyebrow">{t.how}</div><h2>{t.from}</h2><div className="grid">{t.steps.map(([title,text],i)=><article className="card" key={title}><div className="eyebrow">{lang==="fr"?"ÉTAPE":lang==="es"?"PASO":lang==="pt"?"ETAPA":"STEP"} {i+1}</div><h3>{title}</h3><p>{text}</p></article>)}</div></section><section className="card highlight"><div className="eyebrow">{t.pilot}</div><p className="question">{t.q}</p><p>{t.rule}</p></section><section><div className="eyebrow">{t.why}</div><div className="grid">{t.principles.map(([title,text])=><article className="card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></section><footer className="footer">Human Room · Brussels / Online · MVP · <Link href="/safety">{t.safety}</Link></footer></main>}
